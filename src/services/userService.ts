@@ -33,7 +33,7 @@ export const register = async ({
   });
   await newUser.save();
   return {
-    data: generateJWT(generateJWT({ firstName, lastName, email, password })),
+    data: generateJWT({ firstName, lastName, email, password }),
     statusCode: 201,
   };
 };
@@ -63,7 +63,8 @@ export const login = async ({ email, password }: LoginParams) => {
   return { data: "Incorrect email or password", statusCode: 400 };
 };
 
-const generateJWT = (data: any) => {
-  //generate a encrypted number
+const generateJWT = (data: Object) => {
+  console.log(data);
+
   return jwt.sign(data, "58SwF4Jwqm1KPEx8FR8CKvxsqLavx6jY");
 };
