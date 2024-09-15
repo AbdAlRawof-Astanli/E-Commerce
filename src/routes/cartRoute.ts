@@ -5,6 +5,7 @@ import {
   addItemCart,
   deleteItemInCart,
   clearCart,
+  checkout,
 } from "../services/cartService";
 import vaildateJWT from "../middlewares/vaildateJWT";
 import { ExtendRequest } from "../types/extendedRequest";
@@ -47,6 +48,12 @@ router.delete(
 router.delete("/", vaildateJWT, async (req: ExtendRequest, res) => {
   const userId = req.user._id;
   const response = await clearCart({ userId });
+  res.status(response.statusCode).send(response.data);
+});
+router.post("/checkout", vaildateJWT, async (req: ExtendRequest, res) => {
+  const userId = req.user._id;
+  const { address } = req.body;
+  const response = await checkout({ userId, address });
   res.status(response.statusCode).send(response.data);
 });
 export default router;
