@@ -5,7 +5,7 @@ import productRoute from "./routes/productRoute";
 import cartRoute from "./routes/cartRoute";
 import { seedInitialProducts } from "./services/productService";
 const app = express();
-const port = 5001;
+const port = 5000;
 //transform any json coming from requist and assign them to req.body
 app.use(express.json());
 mongoose
