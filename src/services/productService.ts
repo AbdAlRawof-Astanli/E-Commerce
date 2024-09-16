@@ -17,18 +17,21 @@ export const seedInitialProducts = async () => {
   //     { title: "Product 9", image: "image9.jpg", price: 10, stock: 76 },
   //     { title: "Product 10", image: "image10.jpg", price: 10, stock: 44 },
   //   ];
-
-  const products = [
-    {
-      title: "Dell laptop",
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNhP85PVVXLf4_Er4SlveOnMZf0T5k8fjGzw&s",
-      price: 100,
-      stock: 100,
-    },
-  ];
-  const existingProducts = await getAllProducts();
-  if (existingProducts.length === 0) {
-    await productModel.insertMany(products);
+  try {
+    const products = [
+      {
+        title: "Dell laptop",
+        image:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNhP85PVVXLf4_Er4SlveOnMZf0T5k8fjGzw&s",
+        price: 100,
+        stock: 100,
+      },
+    ];
+    const existingProducts = await getAllProducts();
+    if (existingProducts.length === 0) {
+      await productModel.insertMany(products);
+    }
+  } catch (error) {
+    console.error("Cannot see database", error);
   }
 };

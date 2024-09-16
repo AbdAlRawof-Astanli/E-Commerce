@@ -3,6 +3,7 @@ import { register, login } from "../services/userService";
 const router = Router();
 //register route
 router.post("/register", async (req, res) => {
+  try{
   const { firstName, lastName, email, password } = req.body;
   const { data, statusCode } = await register({
     firstName,
@@ -11,11 +12,18 @@ router.post("/register", async (req, res) => {
     password,
   });
   res.status(statusCode).send(data);
+  }catch (error: any) {
+    res.status(500).send("Something went wrong!");
+  }
 });
 //Login route
 router.post("/login", async (req, res) => {
+  try{
   const { email, password } = req.body;
   const { statusCode, data } = await login({ email, password });
   res.status(statusCode).send(data);
+} catch (error: any) {
+  res.status(500).send("Something went wrong!");
+}  
 });
 export default router;
