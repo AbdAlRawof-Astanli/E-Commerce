@@ -5,11 +5,13 @@ import userRoute from "./routes/userRoute";
 import productRoute from "./routes/productRoute";
 import cartRoute from "./routes/cartRoute";
 import { seedInitialProducts } from "./services/productService";
+import cors from "cors";
 dotenv.config();
 const app = express();
-const port = 5000;
+const port = 3001;
 //transform any json coming from requist and assign them to req.body
 app.use(express.json());
+app.use(cors());
 //connect to Database
 mongoose
   .connect(process.env.DATABASE_URL || "")
