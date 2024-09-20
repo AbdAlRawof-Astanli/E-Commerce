@@ -8,7 +8,7 @@ import { seedInitialProducts } from "./services/productService";
 import cors from "cors";
 dotenv.config();
 const app = express();
-const port = 3001;
+const port = 3000;
 //transform any json coming from requist and assign them to req.body
 app.use(express.json());
 app.use(cors());

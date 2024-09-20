@@ -7,6 +7,7 @@ import LoginPage from "./pages/LoginPage.tsx";
 import CartPage from "./pages/CartPage.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import CartProvider from "./context/Cart/CartProvider.tsx";
+import CheckoutPage from "./pages/CheckoutPage.tsx";
 function App() {
   return (
     <AuthProvider>
@@ -19,6 +20,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/cart" element={<CartPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
             </Route>
           </Routes>
         </CartProvider>
