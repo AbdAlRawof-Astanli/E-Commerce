@@ -14,6 +14,8 @@ import { useAuth } from "../context/Auth/AuthContext";
 import Grid from "@mui/material/Grid2";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import Badge from "@mui/material/Badge";
+import ShoppingCart from "@mui/icons-material/ShoppingCart";
 
 function Navbar() {
   const { username, isAuthenticated, logout } = useAuth();
@@ -35,6 +37,9 @@ function Navbar() {
     logout();
     navigate("/");
     handleCloseUserMenu();
+  };
+  const handleCart = () => {
+    navigate("/cart");
   };
   return (
     <AppBar position="static">
@@ -72,7 +77,25 @@ function Navbar() {
               </Typography>
             </Box>
 
-            <Box sx={{ flexGrow: 0 }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                flexDirection: "row",
+                alignItems: "center",
+                flexGrow: 0,
+              }}
+              gap={1}
+            >
+              <IconButton
+                aria-label="cart"
+                sx={{ color: "#ffffff" }}
+                onClick={handleCart}
+              >
+                <Badge badgeContent={4} color="info">
+                  <ShoppingCart />
+                </Badge>
+              </IconButton>
               {isAuthenticated ? (
                 <>
                   <Tooltip title="Open settings">

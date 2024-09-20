@@ -5,10 +5,10 @@ const USERNAME_KEY = "username";
 const TOKEN_KEY = "token";
 const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const [username, setUsername] = useState<string | null>(
-    localStorage.getItem("username")
+    localStorage.getItem(USERNAME_KEY)
   );
   const [token, setToken] = useState<string | null>(
-    localStorage.getItem("token")
+    localStorage.getItem(TOKEN_KEY)
   );
 
   const isAuthenticated = !!token;

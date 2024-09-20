@@ -31,13 +31,13 @@ const LoginPage = () => {
         password,
       }),
     });
-    console.log(response);
 
     if (!response.ok) {
       setError("Unable to login user, please try different credientials!");
     }
 
     const token = await response.json();
+
     if (!token) {
       setError("Incorrect Token");
       return;

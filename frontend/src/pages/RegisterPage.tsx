@@ -41,7 +41,8 @@ const RegisterPage = () => {
     if (!response.ok) {
       setError("Unable to register user, please try different credientials!");
     }
-
+    
+    
     const token = await response.json();
     if (!token) {
       setError("Incorrect Token");
