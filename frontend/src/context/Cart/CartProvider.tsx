@@ -69,12 +69,20 @@ const CartProvider: FC<PropsWithChildren> = ({ children }) => {
         setError("Failed to parse cart data");
       }
       const cartItemsMapped = cart.items.map(
-        ({ product, quantity }: { product: any; quantity: any }) => ({
+        ({
+          product,
+          quantity,
+          unitPrice,
+        }: {
+          product: any;
+          quantity: any;
+          unitPrice: number;
+        }) => ({
           productId: product._id,
           title: product.title,
           image: product.image,
           quantity,
-          unitPrice: product.unitPrice,
+          unitPrice: unitPrice,
         })
       );
       setCartItems([...cartItemsMapped]);
@@ -131,9 +139,54 @@ const CartProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   };
 
+  const removeItemInCart = async (productId: string) => {
+    try {
+      const response = await fetch(`${BASE_URL}/cart/items/${productId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!response.ok) {
+        setError("Failed to delete the item in the cart");
+      }
+      const cart = await response.json();
+      if (!cart) {
+        setError("Failed to parse cart data");
+      }
+      const cartItemsMapped = cart.items.map(
+        ({
+          product,
+          quantity,
+          unitPrice,
+        }: {
+          product: any;
+          quantity: any;
+          unitPrice: number;
+        }) => ({
+          productId: product._id,
+          title: product.title,
+          image: product.image,
+          quantity,
+          unitPrice: unitPrice,
+        })
+      );
+      setCartItems([...cartItemsMapped]);
+      setTotalAmount(cart.totalAmount);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <CartContext.Provider
-      value={{ cartItems, totalAmount, addItemToCart, updateItemInCart }}
+      value={{
+        cartItems,
+        totalAmount,
+        addItemToCart,
+        updateItemInCart,
+        removeItemInCart,
+      }}
     >
       {children}
     </CartContext.Provider>
