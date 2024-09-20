@@ -2,11 +2,34 @@ import { Box, Container, TextField, Typography } from "@mui/material";
 import { useCart } from "../context/Cart/CartContext";
 import Button from "@mui/material/Button";
 import { useRef } from "react";
+import { BASE_URL } from "../constants/baseUrl";
+import { useAuth } from "../context/Auth/AuthContext";
+import { useNavigate } from "react-router-dom";
 const CheckoutPage = () => {
   const { cartItems, totalAmount } = useCart();
-
+  const { token } = useAuth();
   const addressRef = useRef<HTMLInputElement>(null);
-
+  const navigate = useNavigate();
+  const handleConfirmOrder = async () => {
+    const address = addressRef.current?.value;
+    if (!address) {
+      return;
+    }
+    const response = await fetch(`${BASE_URL}/cart/checkout`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        address,
+      }),
+    });
+    if (!response.ok) {
+      return;
+    }
+    navigate("/order-success");
+  };
   const renderCartItem = () => {
     return (
       <Box
@@ -78,7 +101,7 @@ const CheckoutPage = () => {
         fullWidth
       ></TextField>
       {renderCartItem()}
-      <Button variant="contained" fullWidth>
+      <Button variant="contained" fullWidth onClick={handleConfirmOrder}>
         Pay Now
       </Button>
     </Container>

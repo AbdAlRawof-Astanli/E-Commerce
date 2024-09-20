@@ -113,7 +113,7 @@ function Navbar() {
                       gap={2}
                     >
                       <Grid>
-                        <Typography>{username}</Typography>
+                        <Typography>{username?.split("@")[0]}</Typography>
                       </Grid>
                       <Grid>
                         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -152,7 +152,7 @@ function Navbar() {
                 onClose={handleCloseUserMenu}
               >
                 <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: "center" }}>Profile</Typography>
+                  <Typography sx={{ textAlign: "center" }}>My Order</Typography>
                 </MenuItem>
                 <MenuItem onClick={handleLogout}>
                   <Typography sx={{ textAlign: "center" }}>LogOut</Typography>
