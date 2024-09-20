@@ -16,12 +16,14 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Badge from "@mui/material/Badge";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
+import { useCart } from "../context/Cart/CartContext";
 
 function Navbar() {
   const { username, isAuthenticated, logout } = useAuth();
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+  const { cartItems } = useCart();
   const navigate = useNavigate();
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -54,29 +56,34 @@ function Navbar() {
               width: "100%",
             }}
           >
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
+            <Button
+              variant="text"
+              sx={{ color: "#ffffff" }}
+              onClick={() => navigate("/")}
             >
-              <AdbIcon sx={{ display: "flex", mr: 1 }} />
-              <Typography
-                variant="h6"
-                noWrap
-                component="a"
+              <Box
                 sx={{
-                  mr: 2,
                   display: "flex",
-                  fontFamily: "monospace",
-                  fontWeight: 700,
+                  flexDirection: "row",
+                  alignItems: "center",
                 }}
               >
-                Astanli Store
-              </Typography>
-            </Box>
-
+                <AdbIcon sx={{ display: "flex", mr: 1 }} />
+                <Typography
+                  variant="h6"
+                  noWrap
+                  component="a"
+                  sx={{
+                    mr: 2,
+                    display: "flex",
+                    fontFamily: "monospace",
+                    fontWeight: 700,
+                  }}
+                >
+                  Astanli Store
+                </Typography>
+              </Box>
+            </Button>
             <Box
               sx={{
                 display: "flex",
@@ -92,7 +99,7 @@ function Navbar() {
                 sx={{ color: "#ffffff" }}
                 onClick={handleCart}
               >
-                <Badge badgeContent={4} color="info">
+                <Badge badgeContent={cartItems.length} color="info">
                   <ShoppingCart />
                 </Badge>
               </IconButton>
