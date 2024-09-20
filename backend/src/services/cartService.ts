@@ -13,11 +13,20 @@ const createCartForUser = async ({ userId }: CreateCartForUser) => {
 };
 interface GetActiveCartForUser {
   userId: string;
+  populateProduct?: boolean;
 }
 export const getActiveCartForUser = async ({
   userId,
+  populateProduct,
 }: GetActiveCartForUser) => {
-  let cart = await cartModel.findOne({ userId, status: "active" });
+  let cart;
+  if (populateProduct) {
+    cart = await cartModel
+      .findOne({ userId, status: "active" })
+      .populate("items.product");
+  } else {
+    cart = await cartModel.findOne({ userId, status: "active" });
+  }
   if (!cart) {
     cart = await createCartForUser({ userId });
   }
@@ -54,6 +63,7 @@ export const addItemCart = async ({
     return { data: "Item already exist in cart!", statusCode: 400 };
   }
   //Fetch the product
+
   const product = await productModel.findById(productId);
   if (!product) {
     return { data: "Product not found!", statusCode: 400 };
@@ -68,8 +78,11 @@ export const addItemCart = async ({
   });
   //Update the totalAmount fror the cart
   cart.totalAmount += product.price * quantity;
-  const updatedCart = await cart.save();
-  return { data: updatedCart, statusCode: 200 };
+  await cart.save();
+  return {
+    data: await getActiveCartForUser({ userId, populateProduct: true }),
+    statusCode: 200,
+  };
 };
 
 interface UpdateItemToCart {
@@ -106,9 +119,11 @@ export const updateItemInCart = async ({
   existInCart.quantity = quantity;
   total += existInCart.quantity * existInCart.unitPrice;
   cart.totalAmount = total;
-  const updatedCart = await cart.save();
-  const updatedStockProduct = await product.save();
-  return { data: updatedCart, statusCode: 200 };
+  await cart.save();
+  return {
+    data: await getActiveCartForUser({ userId, populateProduct: true }),
+    statusCode: 200,
+  };
 };
 
 interface DeleteItemInCart {
@@ -134,8 +149,11 @@ export const deleteItemInCart = async ({
   const total = calculateCartTotalItems({ cartItems: otherCartItems });
   cart.totalAmount = total;
   cart.items = otherCartItems;
-  const updatedCart = await cart.save();
-  return { data: updatedCart, statusCode: 200 };
+  await cart.save();
+  return {
+    data: await getActiveCartForUser({ userId, populateProduct: true }),
+    statusCode: 200,
+  };
 };
 
 const calculateCartTotalItems = ({ cartItems }: { cartItems: ICartItem[] }) => {
