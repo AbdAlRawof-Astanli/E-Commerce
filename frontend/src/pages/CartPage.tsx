@@ -3,7 +3,13 @@ import { useCart } from "../context/Cart/CartContext";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 const CartPage = () => {
-  const { cartItems, totalAmount, updateItemInCart,removeItemInCart } = useCart();
+  const {
+    cartItems,
+    totalAmount,
+    updateItemInCart,
+    removeItemInCart,
+    clearCart,
+  } = useCart();
 
   const handleQuantity = (productId: string, quantity: number) => {
     if (quantity <= 0) {
@@ -15,10 +21,8 @@ const CartPage = () => {
   const handleRemoveItem = async (productId: string) => {
     removeItemInCart(productId);
   };
-
-  return (
-    <Container fixed={true} sx={{ mt: 2 }}>
-      <Typography variant="h5">My Cart</Typography>
+  const renderCartItem = () => {
+    return (
       <Box display="flex" flexDirection="column" gap={4}>
         {cartItems.map((item) => {
           {
@@ -80,6 +84,23 @@ const CartPage = () => {
           <Typography>Total Amount : {totalAmount.toFixed(2)} $</Typography>
         </Box>
       </Box>
+    );
+  };
+  return (
+    <Container fixed={true} sx={{ mt: 2 }}>
+      <Box display="flex" justifyContent="space-between" sx={{ mb: 2 }}>
+        <Typography variant="h5">My Cart</Typography>
+        <Button onClick={() => clearCart()}>Clear Cart</Button>
+      </Box>
+      {cartItems.length ? (
+        renderCartItem()
+      ) : (
+        <Box>
+          <Typography>
+            Cart is Empty,Please start shopping and add items first
+          </Typography>
+        </Box>
+      )}
     </Container>
   );
 };
