@@ -67,6 +67,7 @@ const CheckoutPage = () => {
                     alignItems="center"
                     justifyContent="space-between"
                     width="100%"
+                    sx={{ml:4}}
                   >
                     <Typography variant="h6">{item.title}</Typography>
                     <Typography>

@@ -54,13 +54,16 @@ const CartPage = () => {
                   flexDirection="row"
                 >
                   <img src={item.image} alt="" width={100} />
-                  <Box>
+                  <Box sx={{ ml: 4 }}>
                     <Typography variant="h6">{item.title}</Typography>
                     <Typography>
                       {item.quantity} x {item.unitPrice} $
                     </Typography>
-                    <Button onClick={() => handleRemoveItem(item.productId)}>
-                      RemoveItem
+                    <Button
+                      onClick={() => handleRemoveItem(item.productId)}
+                      sx={{ color: "red" }}
+                    >
+                      Remove Item
                     </Button>
                   </Box>
                 </Box>
@@ -71,7 +74,6 @@ const CartPage = () => {
                   <Button
                     onClick={() => {
                       handleQuantity(item.productId, item.quantity + 1);
-                      console.log(item.productId);
                     }}
                   >
                     +
@@ -105,15 +107,31 @@ const CartPage = () => {
   return (
     <Container fixed={true} sx={{ mt: 2 }}>
       <Box display="flex" justifyContent="space-between" sx={{ mb: 2 }}>
-        <Typography variant="h5">My Cart</Typography>
-        <Button onClick={() => clearCart()}>Clear Cart</Button>
+        <Typography variant="h5" sx={{backgroundColor:"white"}}>My Cart</Typography>
+        {cartItems.length != 0 && (
+          <Button
+            variant="contained"
+            sx={{ color: "white", backgroundColor: "red" }}
+            onClick={() => clearCart()}
+          >
+            Clear Cart
+          </Button>
+        )}
       </Box>
       {cartItems.length ? (
         renderCartItem()
       ) : (
-        <Box>
-          <Typography>
-            Cart is Empty,Please start shopping and add items first
+        <Box sx={{ mt: 3 }}>
+          <Typography
+            sx={{
+              border: 1,
+              p: 4,
+              borderRadius: 2,
+              textAlign: "center",
+              borderColor: "#f0f0f0",
+            }}
+          >
+            Cart is Empty, Please start shopping and add items first
           </Typography>
         </Box>
       )}

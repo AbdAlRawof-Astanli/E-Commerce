@@ -1,6 +1,7 @@
 import userModel from "../models/userModel";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { orderModel } from "../models/orderModel";
 //contain all the functionality of user
 interface RegisterParams {
   firstName: string;
@@ -61,6 +62,18 @@ export const login = async ({ email, password }: LoginParams) => {
     };
   }
   return { data: "Incorrect email or password", statusCode: 400 };
+};
+
+interface getMyOrdersParams {
+  userId: string;
+}
+
+export const getMyOrders = async ({ userId }: getMyOrdersParams) => {
+  try {
+    return { data: await orderModel.find({ userId }), statusCode: 200 };
+  } catch (error) {
+    return { data: "Something Went Wront", statusCode: 404 };
+  }
 };
 
 const generateJWT = (data: Object) => {
